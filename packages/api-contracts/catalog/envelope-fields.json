@@ -1,0 +1,9 @@
+{
+  "success": ["ok", "data", "meta"],
+  "failure": ["ok", "error", "meta"],
+  "meta": ["requestId"],
+  "errorRequired": ["code", "category", "httpStatus", "message"],
+  "errorOptional": ["details"],
+  "toolPhases": ["started", "delta", "completed", "failed"],
+  "channels": ["chat", "aiops"]
+}

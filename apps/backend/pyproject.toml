@@ -1,0 +1,58 @@
+[project]
+name = "super-ai"
+version = "0.1.0"
+description = "Super AI 后端骨架"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115",
+    "pydantic>=2",
+    "sqlalchemy[asyncio]>=2",
+    "aiosqlite>=0.20",
+    "alembic>=1.14",
+    "httpx>=0.27",
+    "uvicorn>=0.32",
+    "pwdlib[argon2]>=0.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/super_ai"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/super_ai" = "super_ai"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+    "pyright>=1.1",
+]
+
+[tool.uv]
+package = true
+default-groups = ["dev"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.10"
+include = ["src", "tests"]
+extraPaths = ["src", "."]
+venvPath = "."
+venv = ".venv"

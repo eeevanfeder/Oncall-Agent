@@ -1,0 +1,40 @@
+# 本机项目配置（只提交 template）
+config/project.json
+config/user.project.json
+
+# 环境变量文件
+.env
+.env.*
+
+# IDE / 虚拟环境
+.idea/
+.venv/
+**/.venv/
+
+# Node / 构建产物
+node_modules/
+dist/
+coverage/
+
+# 缓存
+.cache/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.turbo/
+**/.vite/
+**/__pycache__/
+*.py[cod]
+
+# VitePress
+docs/.vitepress/cache
+docs/.vitepress/dist
+
+# 后端运行时
+apps/backend/var/
+
+# SQLite 与日志
+*.db
+*.sqlite
+*.sqlite3
+*.log

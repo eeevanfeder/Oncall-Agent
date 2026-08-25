@@ -1,0 +1,23 @@
+{
+  "frontend": {
+    "title": "",
+    "apiBaseUrl": "",
+    "analytics": {
+      "publicKey": ""
+    }
+  },
+  "llm": {
+    "apiKey": ""
+  },
+  "cls": {
+    "secret": ""
+  },
+  "mcp": {
+    "token": "",
+    "secret": ""
+  },
+  "minio": {
+    "secretKey": "",
+    "password": ""
+  }
+}

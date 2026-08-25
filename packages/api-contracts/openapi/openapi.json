@@ -1,0 +1,301 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Super AI HTTP 合同",
+    "version": "0.3.0",
+    "description": "机器可读 HTTP 合同。后续提案必须先扩展此文档再增加 endpoint。"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "foundationHealth",
+        "tags": ["foundation"],
+        "summary": "健康检查",
+        "responses": {
+          "200": {
+            "description": "服务可用",
+            "headers": {
+              "X-Request-ID": {
+                "required": true,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthSuccessEnvelope" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "authRegister",
+        "tags": ["auth"],
+        "summary": "注册",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthCredentials" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "注册成功",
+            "headers": {
+              "X-Request-ID": {
+                "required": true,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthUserSuccessEnvelope" }
+              }
+            }
+          },
+          "409": {
+            "description": "邮箱已占用",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FailureEnvelope" }
+              }
+            }
+          },
+          "422": {
+            "description": "校验失败",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FailureEnvelope" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "authLogin",
+        "tags": ["auth"],
+        "summary": "登录",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthCredentials" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登录成功",
+            "headers": {
+              "X-Request-ID": {
+                "required": true,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthLoginSuccessEnvelope" }
+              }
+            }
+          },
+          "401": {
+            "description": "邮箱或密码不正确",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FailureEnvelope" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "authLogout",
+        "tags": ["auth"],
+        "summary": "登出",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "已撤销当前会话",
+            "headers": {
+              "X-Request-ID": {
+                "required": true,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthLogoutSuccessEnvelope" }
+              }
+            }
+          },
+          "401": {
+            "description": "未认证",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FailureEnvelope" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "authMe",
+        "tags": ["auth"],
+        "summary": "当前用户",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "当前用户",
+            "headers": {
+              "X-Request-ID": {
+                "required": true,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthUserSuccessEnvelope" }
+              }
+            }
+          },
+          "401": {
+            "description": "未认证",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FailureEnvelope" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Meta": {
+        "type": "object",
+        "required": ["requestId"],
+        "properties": {
+          "requestId": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      },
+      "ApiErrorBody": {
+        "type": "object",
+        "required": ["code", "category", "httpStatus", "message"],
+        "properties": {
+          "code": { "type": "string" },
+          "category": { "type": "string" },
+          "httpStatus": { "type": "integer" },
+          "message": { "type": "string" },
+          "details": { "type": "object", "additionalProperties": true }
+        }
+      },
+      "FailureEnvelope": {
+        "type": "object",
+        "required": ["ok", "error", "meta"],
+        "properties": {
+          "ok": { "const": false },
+          "error": { "$ref": "#/components/schemas/ApiErrorBody" },
+          "meta": { "$ref": "#/components/schemas/Meta" }
+        },
+        "additionalProperties": false
+      },
+      "HealthData": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "const": "ok" }
+        },
+        "additionalProperties": false
+      },
+      "HealthSuccessEnvelope": {
+        "type": "object",
+        "required": ["ok", "data", "meta"],
+        "properties": {
+          "ok": { "const": true },
+          "data": { "$ref": "#/components/schemas/HealthData" },
+          "meta": { "$ref": "#/components/schemas/Meta" }
+        },
+        "additionalProperties": false
+      },
+      "AuthCredentials": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string", "minLength": 8 }
+        },
+        "additionalProperties": false
+      },
+      "AuthUser": {
+        "type": "object",
+        "required": ["id", "email", "createdAt"],
+        "properties": {
+          "id": { "type": "string" },
+          "email": { "type": "string" },
+          "createdAt": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "AuthLoginData": {
+        "type": "object",
+        "required": ["accessToken", "user"],
+        "properties": {
+          "accessToken": { "type": "string", "minLength": 1 },
+          "user": { "$ref": "#/components/schemas/AuthUser" }
+        },
+        "additionalProperties": false
+      },
+      "AuthUserSuccessEnvelope": {
+        "type": "object",
+        "required": ["ok", "data", "meta"],
+        "properties": {
+          "ok": { "const": true },
+          "data": { "$ref": "#/components/schemas/AuthUser" },
+          "meta": { "$ref": "#/components/schemas/Meta" }
+        },
+        "additionalProperties": false
+      },
+      "AuthLoginSuccessEnvelope": {
+        "type": "object",
+        "required": ["ok", "data", "meta"],
+        "properties": {
+          "ok": { "const": true },
+          "data": { "$ref": "#/components/schemas/AuthLoginData" },
+          "meta": { "$ref": "#/components/schemas/Meta" }
+        },
+        "additionalProperties": false
+      },
+      "AuthLogoutSuccessEnvelope": {
+        "type": "object",
+        "required": ["ok", "data", "meta"],
+        "properties": {
+          "ok": { "const": true },
+          "data": {
+            "type": "object",
+            "additionalProperties": false
+          },
+          "meta": { "$ref": "#/components/schemas/Meta" }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

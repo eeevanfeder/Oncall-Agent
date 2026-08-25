@@ -1,0 +1,32 @@
+{
+  "database": {
+    "url": ""
+  },
+  "frontend": {
+    "title": "",
+    "apiBaseUrl": "",
+    "analytics": {
+      "publicKey": ""
+    }
+  },
+  "llm": {
+    "provider": "",
+    "apiKey": "",
+    "password": ""
+  },
+  "cls": {
+    "endpoint": "",
+    "secret": ""
+  },
+  "mcp": {
+    "url": "",
+    "token": "",
+    "secret": ""
+  },
+  "minio": {
+    "endpoint": "",
+    "accessKey": "",
+    "secretKey": "",
+    "password": ""
+  }
+}

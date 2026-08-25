@@ -1,32 +1,23 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
-
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
-
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+context: |
+  这是 Super AI 单仓。所有 OpenSpec 文档使用简体中文。提交信息遵循 Conventional Commits。
+  目录：apps/backend、apps/frontend、packages/api-contracts、config、infra、scripts、openspec、docs。
+  后端：Python>=3.10、FastAPI、Pydantic v2、uv、hatchling、src layout（apps/backend/src/super_ai）、
+  只允许 from super_ai...，禁止 from src.super_ai。SQLAlchemy 2 async、aiosqlite、Alembic、
+  pytest、pytest-asyncio（asyncio_mode=auto）、Ruff（line-length=100、target py310、规则 B/E/F/I/UP）、
+  strict Pyright。模块 import 期间不得连接 SQLite、Milvus、LLM 或 MCP。
+  持久化：SQLAlchemy 2 async + aiosqlite；database.url 来自本地 JSON 深合并；Alembic 是
+  schema 唯一权威；engine/session 只在 lifespan / provider / 显式初始化中创建；领域只依赖
+  Repository Protocol 与不可变 record；SQLite 实现在 super_ai.memory.sqlite，扩展点在
+  extended_sqlite；测试使用临时库，不得依赖 var/memory.sqlite3。
+  Agent/AI（后续提案实现）：LangChain 1.x create_agent、LangGraph、langchain-openai、
+  langchain-mcp-adapters、MCP、pymilvus 3、rank-bm25、pypdf、langchain-text-splitters、httpx。
+  前端：Vue 3.5、Vite 6、TypeScript 5.6 strict（exactOptionalPropertyTypes、noUncheckedIndexedAccess、
+  isolatedModules、ES2022/Bundler）、Pinia 3、Vue Router 4、Vitest 2、marked、DOMPurify、lucide-vue-next。
+  验收目标是桌面 Web。
+  配置：只提交空 template；本地 project.json / user.project.json 被忽略；后端递归深合并；
+  不把 OS 环境变量当作项目配置；前端只注入 frontend.title、frontend.apiBaseUrl 与明确 public 的
+  analytics key；LLM/CLS/MCP/MinIO secret 不得进入浏览器 bundle。
+  Compose 只托管 etcd、MinIO、Milvus、Attu、Alertmanager；后端、前端、官方 CLS MCP Server 在主机运行。
+  认证 HTTP API 与前端 auth 状态已落地；不要实现完整登录页面，也不要实现未立项的聊天、知识库、AIOps、MCP 产品功能。

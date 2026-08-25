@@ -1,0 +1,19 @@
+{
+  "name": "super-ai",
+  "private": true,
+  "workspaces": [
+    "apps/frontend",
+    "packages/api-contracts",
+    "docs"
+  ],
+  "scripts": {
+    "contracts:typecheck": "npm run typecheck -w @super-ai/api-contracts",
+    "contracts:test": "npm run test -w @super-ai/api-contracts",
+    "frontend:dev": "npm run dev -w @super-ai/frontend",
+    "frontend:typecheck": "npm run typecheck -w @super-ai/frontend",
+    "frontend:test": "npm run test -w @super-ai/frontend",
+    "frontend:build": "npm run build -w @super-ai/frontend",
+    "docs:dev": "npm run dev -w @super-ai/docs",
+    "docs:build": "npm run build -w @super-ai/docs"
+  }
+}

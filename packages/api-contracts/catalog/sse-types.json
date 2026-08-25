@@ -1,0 +1,10 @@
+[
+  "content.delta",
+  "reasoning.delta",
+  "tool.call",
+  "reference.source",
+  "task.status",
+  "report",
+  "complete",
+  "error"
+]
